@@ -264,7 +264,7 @@ pointer-events:none;
 Bitkub Chain Wallet
 </div>
 <div class="balance" id="balance">
-0.00000000
+0
 </div>
 <div class="price" id="price">
 Loading price...
@@ -486,7 +486,7 @@ id="toast"
 <script>
 const tokenAddress =
 "0x046c2b024e3BcAeCC965BB0f80cF8e066352fA01";
-const tokenDecimals = 18;
+const tokenDecimals = 8;
 const providerOptions = {};
 let web3Modal =
 new window.Web3Modal.default({
@@ -729,7 +729,7 @@ document.getElementById(
 ).innerText =
 parseFloat(formatted)
 .toFixed(8)
-+" 1₿";
++" SDT";
 }
 async function fetchPrice(){
 try{
