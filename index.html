@@ -71,6 +71,7 @@ color:#94a3b8;
 font-size:52px;
 font-weight:bold;
 margin-top:25px;
+line-height:1.2;
 background:
 linear-gradient(
 90deg,
@@ -79,6 +80,13 @@ linear-gradient(
 );
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
+}
+.usd-value{
+font-size:20px;
+margin-top:10px;
+color:#22c55e;
+font-weight:600;
+-webkit-text-fill-color:#22c55e;
 }
 .price{
 margin-top:10px;
@@ -217,8 +225,7 @@ justify-content:center;
 align-items:center;
 }
 .modal-content{
-background:
-#0f172a;
+background:#0f172a;
 padding:25px;
 border-radius:25px;
 width:90%;
@@ -275,20 +282,17 @@ Not connected
 <div class="row">
 <button
 class="primary"
-onclick="connectWallet()"
->
+onclick="connectWallet()">
 🔗 Connect Wallet
 </button>
 <button
 class="secondary"
-onclick="copyAddress()"
->
+onclick="copyAddress()">
 📋 Copy
 </button>
 <button
 class="danger"
-onclick="logout()"
->
+onclick="logout()">
 🚪 Logout
 </button>
 </div>
@@ -296,33 +300,28 @@ onclick="logout()"
 <button
 onclick="showSection('send')"
 id="tab-send"
-class="active"
->
+class="active">
 📤 Send
 </button>
 <button
 onclick="showSection('receive')"
-id="tab-receive"
->
+id="tab-receive">
 📥 Receive
 </button>
 <button
 onclick="showSection('history')"
-id="tab-history"
->
+id="tab-history">
 🧾 History
 </button>
 <button
 onclick="showSection('chart')"
-id="tab-chart"
->
+id="tab-chart">
 📈 Chart
 </button>
 </nav>
 <div
 id="section-send"
-class="section active"
->
+class="section active">
 <div class="section-title">
 📤 Send Token
 </div>
@@ -340,14 +339,12 @@ placeholder="Amount"
 <button
 class="primary"
 id="sendBtn"
-onclick="sendToken()"
->
+onclick="sendToken()">
 Send Token
 </button>
 <button
 class="secondary"
-onclick="openScanner()"
->
+onclick="openScanner()">
 📷 QR Scan
 </button>
 </div>
@@ -355,36 +352,31 @@ onclick="openScanner()"
 </div>
 <div
 id="section-receive"
-class="section"
->
+class="section">
 <div class="section-title">
 📥 Receive Token
 </div>
 <div
 class="address"
-id="my-address"
->
+id="my-address">
 Your address: -
 </div>
 <div class="row">
 <button
 class="primary"
-onclick="openQRModal()"
->
+onclick="openQRModal()">
 📲 Show QR
 </button>
 <button
 class="secondary"
-onclick="openRequestQR()"
->
+onclick="openRequestQR()">
 💸 Request QR
 </button>
 </div>
 </div>
 <div
 id="section-history"
-class="section"
->
+class="section">
 <div class="section-title">
 🧾 Transaction History
 </div>
@@ -392,8 +384,7 @@ class="section"
 </div>
 <div
 id="section-chart"
-class="section"
->
+class="section">
 <div class="section-title">
 📈 Token Price Chart
 </div>
@@ -405,13 +396,11 @@ src="https://www.geckoterminal.com/bitkub_chain/pools/0xf42d65b190bb78fb8ead8a92
 </div>
 <div
 id="qrModal"
-class="modal"
->
+class="modal">
 <div class="modal-content">
 <div
 class="modal-close"
-onclick="closeQRModal()"
->
+onclick="closeQRModal()">
 ✖
 </div>
 <h2>
@@ -419,20 +408,17 @@ Receive Address
 </h2>
 <div
 id="qr-modal-content"
-style="margin-top:20px;"
->
+style="margin-top:20px;">
 </div>
 </div>
 </div>
 <div
 id="scannerModal"
-class="modal"
->
+class="modal">
 <div class="modal-content">
 <div
 class="modal-close"
-onclick="closeScanner()"
->
+onclick="closeScanner()">
 ✖
 </div>
 <h2>
@@ -440,20 +426,17 @@ Scan QR Code
 </h2>
 <div
 id="scanner"
-style="margin-top:20px;"
->
+style="margin-top:20px;">
 </div>
 </div>
 </div>
 <div
 id="requestQRModal"
-class="modal"
->
+class="modal">
 <div class="modal-content">
 <div
 class="modal-close"
-onclick="closeRequestQR()"
->
+onclick="closeRequestQR()">
 ✖
 </div>
 <h2>
@@ -467,21 +450,18 @@ placeholder="Amount"
 <button
 class="primary"
 style="margin-top:15px;"
-onclick="generateRequestQR()"
->
+onclick="generateRequestQR()">
 Generate QR
 </button>
 <div
 id="request-qr-content"
-style="margin-top:20px;"
->
+style="margin-top:20px;">
 </div>
 </div>
 </div>
 <div
 class="toast"
-id="toast"
->
+id="toast">
 </div>
 <script>
 const tokenAddress =
@@ -497,6 +477,7 @@ let provider;
 let signer;
 let userAddress;
 let scanner;
+let currentPriceUSD = 0;
 function toast(msg){
 const t =
 document.getElementById("toast");
@@ -695,8 +676,7 @@ ${item.time}
 <div style="margin-top:8px;">
 <a
 href="https://www.kubscan.com/tx/${item.tx}"
-target="_blank"
->
+target="_blank">
 View Transaction
 </a>
 </div>
@@ -724,12 +704,19 @@ ethers.utils.formatUnits(
 raw,
 tokenDecimals
 );
+const balance =
+parseFloat(formatted);
+const usdValue =
+balance * currentPriceUSD;
 document.getElementById(
 "balance"
-).innerText =
-parseFloat(formatted)
-.toFixed(8)
-+" SDT";
+).innerHTML =
+`
+${balance.toFixed(8)} 1₿
+<div class="usd-value">
+≈ $${usdValue.toFixed(2)} USD
+</div>
+`;
 }
 async function fetchPrice(){
 try{
@@ -739,15 +726,18 @@ await fetch(
 );
 const data =
 await res.json();
-const price =
+currentPriceUSD =
 parseFloat(
 data.data.attributes
 .base_token_price_usd || 0
-).toFixed(8);
+);
 document.getElementById(
 "price"
 ).innerText =
-"$"+price+" USD";
+"≈ $" +
+currentPriceUSD.toFixed(8) +
+" USD / 1₿";
+getBalance();
 }catch(e){
 document.getElementById(
 "price"
