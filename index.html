@@ -81,6 +81,11 @@ linear-gradient(
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 }
+.token-symbol{
+font-size:42px;
+font-weight:700;
+margin-left:10px;
+}
 .usd-value{
 font-size:22px;
 margin-top:12px;
@@ -260,7 +265,7 @@ pointer-events:none;
 Bitkub Chain Wallet
 </div>
 <div class="balance" id="balance">
-0.00000000
+0.00000000 <span class="token-symbol">SDT</span>
 </div>
 <div class="price" id="price">
 Loading price...
@@ -641,7 +646,7 @@ ${shortAddr(item.to)}
 </div>
 <div>
 <b>Amount:</b>
-${item.amount}
+${item.amount} SDT
 </div>
 <div>
 <b>Time:</b>
@@ -686,7 +691,8 @@ document.getElementById(
 "balance"
 ).innerHTML =
 `
-${balance.toFixed(8)} 1₿
+${balance.toFixed(8)}
+<span class="token-symbol">SDT</span>
 <div class="usd-value">
 $${usdValue.toFixed(2)} USD
 </div>
@@ -842,7 +848,7 @@ toast("Invalid Amount");
 return;
 }
 const data =
-`1BILLION:${userAddress}?amount=${amount}`;
+`SDT:${userAddress}?amount=${amount}`;
 const qr =
 new QRCodeStyling({
 width:220,
