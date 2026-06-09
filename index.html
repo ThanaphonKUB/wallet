@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>1₿illion Wallet</title>
+<title>SDT Wallet</title>
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 <script src="https://unpkg.com/web3modal"></script>
 <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
@@ -258,7 +258,7 @@ pointer-events:none;
 <div class="container">
 <div class="wallet-card">
 <div class="logo">
-💎 1₿illion Wallet
+💎 SDT Wallet
 </div>
 <div class="subtitle">
 Bitkub Chain Wallet
@@ -485,7 +485,7 @@ id="toast"
 </div>
 <script>
 const tokenAddress =
-"0x4dc6f1fa9fd93f28d9b3b37592c572ba18bf6f10";
+"0x046c2b024e3BcAeCC965BB0f80cF8e066352fA01";
 const tokenDecimals = 8;
 const providerOptions = {};
 let web3Modal =
@@ -735,7 +735,7 @@ async function fetchPrice(){
 try{
 const res =
 await fetch(
-"https://api.geckoterminal.com/api/v2/networks/bitkub_chain/pools/0xf42d65b190bb78fb8ead8a92110b653722f96048"
+"https://api.geckoterminal.com/api/v2/networks/bitkub_chain/pools/0x297d8d77a0c0f03e08a840535ea1a99ed1b813d6"
 );
 const data =
 await res.json();
