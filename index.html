@@ -5,7 +5,7 @@
 <meta
 name="viewport"
 content="width=device-width, initial-scale=1.0">
-<title>SDT Wallet Ultra</title>
+<title>SDT Wallet Ultra Mainnet</title>
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
 <style>
 *{
@@ -14,9 +14,9 @@ padding:0;
 box-sizing:border-box;
 }
 body{
-font-family:Arial,sans-serif;
-background:#0f172a;
+background:#020617;
 color:white;
+font-family:Arial,sans-serif;
 padding:20px;
 min-height:100vh;
 }
@@ -25,11 +25,11 @@ max-width:430px;
 margin:auto;
 }
 .card{
-background:#1e293b;
+background:#111827;
 padding:20px;
 border-radius:20px;
 margin-top:20px;
-box-shadow:0 0 20px rgba(0,0,0,.3);
+border:1px solid rgba(255,255,255,.08);
 }
 .title{
 font-size:30px;
@@ -37,9 +37,9 @@ font-weight:bold;
 margin-bottom:20px;
 }
 .balance{
-font-size:34px;
+font-size:36px;
 font-weight:bold;
-margin-top:10px;
+margin-top:12px;
 }
 .status{
 margin-top:10px;
@@ -48,22 +48,21 @@ color:#94a3b8;
 }
 .address{
 margin-top:15px;
-padding:12px;
-background:#0f172a;
-border-radius:12px;
+padding:14px;
+border-radius:14px;
+background:#020617;
 word-break:break-all;
 font-size:13px;
 }
 button{
 width:100%;
-padding:15px;
+padding:16px;
 margin-top:12px;
 border:none;
 border-radius:14px;
-font-size:16px;
+font-size:15px;
 font-weight:bold;
 cursor:pointer;
-transition:.2s;
 }
 button:active{
 transform:scale(.98);
@@ -90,7 +89,7 @@ padding:15px;
 margin-top:12px;
 border:none;
 border-radius:14px;
-background:#0f172a;
+background:#020617;
 color:white;
 font-size:15px;
 outline:none;
@@ -102,10 +101,11 @@ flex-direction:column;
 gap:12px;
 }
 .tx{
-background:#0f172a;
+background:#020617;
 padding:14px;
 border-radius:14px;
-font-size:13px;
+font-size:12px;
+word-break:break-all;
 }
 .loading{
 opacity:.6;
@@ -189,12 +189,33 @@ const tokenABI = [
 "function balanceOf(address owner) view returns (uint256)",
 "function transfer(address to,uint256 amount) returns (bool)"
 ];
+const BITKUB_CHAIN = {
+chainId:'0x60',
+chainName:'Bitkub Chain',
+nativeCurrency:{
+name:'KUB',
+symbol:'KUB',
+decimals:18
+},
+rpcUrls:[
+'https://rpc.bitkubchain.io',
+'https://rpc-bkc1.bitkubchain.io'
+],
+blockExplorerUrls:[
+'https://www.bkcscan.com'
+]
+};
 let provider;
 let signer;
 let contract;
 let userAddress;
 let currentBalance = "0";
-async function switchBitkub(){
+async function ensureBitkubChain(){
+const currentChain =
+await ethereum.request({
+method:'eth_chainId'
+});
+if(currentChain !== '0x60'){
 try{
 await ethereum.request({
 method:'wallet_switchEthereumChain',
@@ -206,26 +227,19 @@ chainId:'0x60'
 if(err.code === 4902){
 await ethereum.request({
 method:'wallet_addEthereumChain',
-params:[{
-chainId:'0x60',
-chainName:'Bitkub Chain',
-nativeCurrency:{
-name:'KUB',
-symbol:'KUB',
-decimals:18
-},
-rpcUrls:[
-'https://rpc.bitkubchain.io'
-],
-blockExplorerUrls:[
-'https://www.bkcscan.com'
-]
-}]
+params:[BITKUB_CHAIN]
 });
+}else{
+throw err;
+}
 }
 }
 }
 async function connectWallet(){
+const btn =
+document.getElementById(
+"connectBtn"
+);
 try{
 if(!window.ethereum){
 alert(
@@ -233,22 +247,19 @@ alert(
 );
 return;
 }
-const btn =
-document.getElementById(
-"connectBtn"
-);
 btn.classList.add(
 "loading"
 );
 btn.innerHTML =
 "Connecting...";
-await switchBitkub();
+await ensureBitkubChain();
 await ethereum.request({
 method:'eth_requestAccounts'
 });
 provider =
 new ethers.providers.Web3Provider(
-window.ethereum
+window.ethereum,
+'any'
 );
 signer =
 provider.getSigner();
@@ -267,21 +278,28 @@ userAddress;
 document.getElementById(
 "status"
 ).innerHTML =
-"Connected";
+"Connected To Bitkub Mainnet";
 localStorage.setItem(
 "sdt_connected",
 "1"
 );
 await loadBalance();
 renderHistory();
+btn.innerHTML =
+"Connected";
+btn.classList.remove(
+"loading"
+);
+}catch(err){
+console.log(err);
 btn.classList.remove(
 "loading"
 );
 btn.innerHTML =
-"Connected";
-}catch(err){
-console.log(err);
-alert(err.message);
+"Connect MetaMask";
+alert(
+err.message
+);
 }
 }
 async function loadBalance(){
@@ -444,7 +462,7 @@ Sent ${tx.amount} SDT
 <div style="margin-top:6px;">
 To: ${shorten(tx.to)}
 </div>
-<div style="margin-top:6px;font-size:11px;color:#94a3b8;word-break:break-all;">
+<div style="margin-top:6px;color:#94a3b8;">
 ${tx.hash}
 </div>
 </div>
@@ -476,7 +494,4 @@ connectWallet();
 );
 setInterval(()=>{
 if(userAddress){
-loadBalance();
-}
-},15000);
-</scr
+lo
