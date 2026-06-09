@@ -1,143 +1,99 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8"/>
+<meta charset="UTF-8">
 <meta
 name="viewport"
-content="width=device-width, initial-scale=1.0"/>
-<title>SDT Wallet Ultra X PRO</title>
-<link
-href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap"
-rel="stylesheet"/>
+content="width=device-width, initial-scale=1.0">
+<title>SDT Wallet Ultra</title>
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://unpkg.com/html5-qrcode"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
--webkit-tap-highlight-color:transparent;
-}
-:root{
---bg1:#020617;
---bg2:#0f172a;
---bg3:#111827;
---cyan:#00f5ff;
---green:#00ff99;
---card:rgba(255,255,255,.05);
---border:rgba(255,255,255,.08);
 }
 body{
-font-family:'Prompt',sans-serif;
-background:
-linear-gradient(
-135deg,
-var(--bg1),
-var(--bg2),
-var(--bg3)
-);
+font-family:Arial,sans-serif;
+background:#0f172a;
 color:white;
+padding:20px;
 min-height:100vh;
-overflow-x:hidden;
 }
 .container{
 max-width:430px;
 margin:auto;
-padding:20px 16px 120px;
 }
-.wallet-card{
-background:var(--card);
-border:1px solid var(--border);
-backdrop-filter:blur(25px);
-border-radius:30px;
-padding:24px;
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:20px;
 margin-top:20px;
+box-shadow:0 0 20px rgba(0,0,0,.3);
+}
+.title{
+font-size:30px;
+font-weight:bold;
+margin-bottom:20px;
 }
 .balance{
-font-size:38px;
-font-weight:700;
-margin-top:12px;
+font-size:34px;
+font-weight:bold;
+margin-top:10px;
+}
+.status{
+margin-top:10px;
+font-size:14px;
+color:#94a3b8;
 }
 .address{
 margin-top:15px;
-padding:14px;
-border-radius:18px;
-background:rgba(255,255,255,.04);
-font-size:13px;
+padding:12px;
+background:#0f172a;
+border-radius:12px;
 word-break:break-all;
+font-size:13px;
 }
 button{
 width:100%;
-padding:16px;
-border:none;
-border-radius:18px;
-font-size:15px;
-font-weight:700;
-cursor:pointer;
+padding:15px;
 margin-top:12px;
-transition:.25s;
+border:none;
+border-radius:14px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+transition:.2s;
 }
-button:hover{
-transform:translateY(-2px);
+button:active{
+transform:scale(.98);
 }
-.connect-btn{
-background:
-linear-gradient(
-45deg,
-var(--cyan),
-var(--green)
-);
+.connect{
+background:#00ffaa;
 color:black;
 }
-.send-btn{
-background:
-linear-gradient(
-45deg,
-#22c55e,
-var(--green)
-);
-color:black;
-}
-.disconnect-btn{
+.disconnect{
 background:#ef4444;
 color:white;
 }
-.input{
+.send{
+background:#22c55e;
+color:black;
+}
+.copy{
+background:#38bdf8;
+color:black;
+}
+input{
 width:100%;
-padding:16px;
+padding:15px;
 margin-top:12px;
 border:none;
+border-radius:14px;
+background:#0f172a;
+color:white;
+font-size:15px;
 outline:none;
-border-radius:18px;
-background:
-rgba(255,255,255,.05);
-color:white;
-}
-.row{
-display:flex;
-gap:10px;
-}
-.max-btn{
-width:90px;
-background:#0284c7;
-color:white;
-}
-.status{
-margin-top:12px;
-font-size:13px;
-color:#94a3b8;
-}
-#qrcode{
-display:flex;
-justify-content:center;
-margin-top:20px;
-}
-#reader{
-margin-top:20px;
-overflow:hidden;
-border-radius:18px;
 }
 .history{
 margin-top:20px;
@@ -146,17 +102,10 @@ flex-direction:column;
 gap:12px;
 }
 .tx{
-background:
-rgba(255,255,255,.04);
+background:#0f172a;
 padding:14px;
-border-radius:16px;
-font-size:12px;
-}
-.txhash{
-margin-top:6px;
-word-break:break-all;
-font-size:11px;
-color:#94a3b8;
+border-radius:14px;
+font-size:13px;
 }
 .loading{
 opacity:.6;
@@ -166,9 +115,13 @@ pointer-events:none;
 </head>
 <body>
 <div class="container">
-<h1>SDT Wallet Ultra X PRO</h1>
-<div class="wallet-card">
-<div>Portfolio Balance</div>
+<div class="title">
+SDT Wallet Ultra
+</div>
+<div class="card">
+<div>
+Portfolio Balance
+</div>
 <div
 class="balance"
 id="balance">
@@ -185,59 +138,39 @@ id="walletAddress">
 Wallet Address
 </div>
 <button
-class="connect-btn"
+class="connect"
 id="connectBtn"
 onclick="connectWallet()">
-Connect Wallet
+Connect MetaMask
 </button>
 <button
-class="disconnect-btn"
+class="disconnect"
 onclick="disconnectWallet()">
 Disconnect
 </button>
-<button onclick="copyAddress()">
+<button
+class="copy"
+onclick="copyAddress()">
 Copy Address
 </button>
-<button onclick="generateQR()">
-Generate QR
-</button>
-<button onclick="scanQR()">
-Scan QR
-</button>
-<button onclick="addToken()">
-Add SDT To MetaMask
-</button>
-<div id="qrcode"></div>
-<div id="reader"></div>
 </div>
-<div class="wallet-card">
+<div class="card">
 <h2>Send SDT</h2>
 <input
-class="input"
 id="toAddress"
-placeholder="Recipient Address"
-/>
-<div class="row">
+placeholder="Recipient Address">
 <input
-class="input"
 id="amount"
 type="number"
-placeholder="Amount"
-/>
+placeholder="Amount">
 <button
-class="max-btn"
-onclick="setMax()">
-MAX
-</button>
-</div>
-<button
-class="send-btn"
+class="send"
 id="sendBtn"
 onclick="sendToken()">
 Send SDT
 </button>
 </div>
-<div class="wallet-card">
+<div class="card">
 <h2>Recent Transactions</h2>
 <div
 class="history"
@@ -254,32 +187,13 @@ const SDT_TOKEN_ADDRESS =
 const SDT_DECIMALS = 8;
 const tokenABI = [
 "function balanceOf(address owner) view returns (uint256)",
-"function transfer(address to,uint256 amount) returns (bool)",
-"function symbol() view returns (string)",
-"function decimals() view returns (uint8)",
-"function name() view returns (string)"
+"function transfer(address to,uint256 amount) returns (bool)"
 ];
 let provider;
 let signer;
 let contract;
 let userAddress;
-let html5QrCode;
 let currentBalance = "0";
-function toast(icon,title){
-Swal.fire({
-toast:true,
-position:'top',
-icon,
-title,
-showConfirmButton:false,
-timer:1800
-});
-}
-function shorten(addr){
-return addr.slice(0,6)
-+ "..."
-+ addr.slice(-4);
-}
 async function switchBitkub(){
 try{
 await ethereum.request({
@@ -313,28 +227,28 @@ blockExplorerUrls:[
 }
 async function connectWallet(){
 try{
-if(typeof window.ethereum === 'undefined'){
-Swal.fire({
-icon:'error',
-title:'Please Install MetaMask'
-});
-window.open(
-'https://metamask.io/download/',
-'_blank'
+if(!window.ethereum){
+alert(
+"กรุณาเปิดผ่าน MetaMask Browser"
 );
 return;
 }
-document
-.getElementById("connectBtn")
-.classList.add("loading");
+const btn =
+document.getElementById(
+"connectBtn"
+);
+btn.classList.add(
+"loading"
+);
+btn.innerHTML =
+"Connecting...";
 await switchBitkub();
 await ethereum.request({
 method:'eth_requestAccounts'
 });
 provider =
 new ethers.providers.Web3Provider(
-window.ethereum,
-'any'
+window.ethereum
 );
 signer =
 provider.getSigner();
@@ -344,36 +258,31 @@ contract =
 new ethers.Contract(
 SDT_TOKEN_ADDRESS,
 tokenABI,
-provider
+signer
 );
-document
-.getElementById("walletAddress")
-.innerHTML =
+document.getElementById(
+"walletAddress"
+).innerHTML =
 userAddress;
-document
-.getElementById("status")
-.innerHTML =
-"Connected To Bitkub Chain";
+document.getElementById(
+"status"
+).innerHTML =
+"Connected";
 localStorage.setItem(
 "sdt_connected",
 "1"
 );
 await loadBalance();
 renderHistory();
-toast(
-'success',
-'Wallet Connected'
+btn.classList.remove(
+"loading"
 );
+btn.innerHTML =
+"Connected";
 }catch(err){
 console.log(err);
-Swal.fire({
-icon:'error',
-title:err.message
-});
+alert(err.message);
 }
-document
-.getElementById("connectBtn")
-.classList.remove("loading");
 }
 async function loadBalance(){
 try{
@@ -387,9 +296,9 @@ balance,
 SDT_DECIMALS
 );
 currentBalance = formatted;
-document
-.getElementById("balance")
-.innerHTML =
+document.getElementById(
+"balance"
+).innerHTML =
 parseFloat(formatted)
 .toFixed(8)
 + " SDT";
@@ -397,107 +306,34 @@ parseFloat(formatted)
 console.log(err);
 }
 }
-function setMax(){
-document
-.getElementById("amount")
-.value =
-parseFloat(currentBalance)
-.toFixed(8);
-}
-function disconnectWallet(){
-localStorage.removeItem(
-"sdt_connected"
-);
-location.reload();
-}
-function copyAddress(){
-if(!userAddress){
-toast(
-'error',
-'Wallet Not Connected'
-);
-return;
-}
-navigator.clipboard.writeText(
-userAddress
-);
-toast(
-'success',
-'Copied'
-);
-}
-function generateQR(){
-if(!userAddress) return;
-document
-.getElementById("qrcode")
-.innerHTML='';
-new QRCode(
-document.getElementById("qrcode"),
-{
-text:userAddress,
-width:220,
-height:220
-}
-);
-}
-async function scanQR(){
-try{
-if(html5QrCode){
-await html5QrCode.stop();
-}
-html5QrCode =
-new Html5Qrcode("reader");
-html5QrCode.start(
-{facingMode:"environment"},
-{
-fps:10,
-qrbox:250
-},
-(decodedText)=>{
-document
-.getElementById("toAddress")
-.value =
-decodedText;
-html5QrCode.stop();
-toast(
-'success',
-'QR Scanned'
-);
-}
-);
-}catch(err){
-console.log(err);
-}
-}
 async function sendToken(){
 try{
 const btn =
-document
-.getElementById("sendBtn");
+document.getElementById(
+"sendBtn"
+);
 btn.disabled = true;
 btn.innerHTML =
 "Sending...";
 const to =
-document
-.getElementById("toAddress")
-.value.trim();
+document.getElementById(
+"toAddress"
+).value.trim();
 const amount =
-document
-.getElementById("amount")
-.value;
+document.getElementById(
+"amount"
+).value;
 if(!ethers.utils.isAddress(to)){
-Swal.fire({
-icon:'error',
-title:'Invalid Address'
-});
+alert(
+"Invalid Address"
+);
 resetSend();
 return;
 }
 if(Number(amount)<=0){
-Swal.fire({
-icon:'error',
-title:'Invalid Amount'
-});
+alert(
+"Invalid Amount"
+);
 resetSend();
 return;
 }
@@ -507,9 +343,7 @@ amount,
 SDT_DECIMALS
 );
 const tx =
-await contract
-.connect(signer)
-.transfer(
+await contract.transfer(
 to,
 parsedAmount
 );
@@ -518,52 +352,59 @@ tx.hash,
 amount,
 to
 );
-Swal.fire({
-icon:'info',
-title:'Waiting Confirmation'
-});
+alert(
+"Transaction Sent:\n" +
+tx.hash
+);
 await tx.wait();
-Swal.fire({
-icon:'success',
-title:'Transfer Success',
-html:`
-<a
-href="https://www.bkcscan.com/tx/${tx.hash}"
-target="_blank"
-style="color:#00ffcc;">
-View Transaction
-</a>
-`
-});
 await loadBalance();
+resetSend();
 }catch(err){
 console.log(err);
-Swal.fire({
-icon:'error',
-title:err.message
-});
-}
+alert(err.message);
 resetSend();
+}
 }
 function resetSend(){
 const btn =
-document
-.getElementById("sendBtn");
+document.getElementById(
+"sendBtn"
+);
 btn.disabled = false;
 btn.innerHTML =
 "Send SDT";
 }
+function disconnectWallet(){
+localStorage.removeItem(
+"sdt_connected"
+);
+location.reload();
+}
+function copyAddress(){
+if(!userAddress){
+alert(
+"Wallet Not Connected"
+);
+return;
+}
+navigator.clipboard.writeText(
+userAddress
+);
+alert(
+"Address Copied"
+);
+}
 function saveTx(hash,amount,to){
 let txs =
 JSON.parse(
-localStorage.getItem("sdt_txs")
-|| "[]"
+localStorage.getItem(
+"sdt_txs"
+)||"[]"
 );
 txs.unshift({
 hash,
 amount,
-to,
-time:Date.now()
+to
 });
 txs = txs.slice(0,10);
 localStorage.setItem(
@@ -572,14 +413,21 @@ JSON.stringify(txs)
 );
 renderHistory();
 }
+function shorten(addr){
+return addr.slice(0,6)
++ "..."
++ addr.slice(-4);
+}
 function renderHistory(){
 const history =
-document
-.getElementById("history");
+document.getElementById(
+"history"
+);
 const txs =
 JSON.parse(
-localStorage.getItem("sdt_txs")
-|| "[]"
+localStorage.getItem(
+"sdt_txs"
+)||"[]"
 );
 if(!txs.length){
 history.innerHTML =
@@ -593,38 +441,15 @@ history.innerHTML += `
 <div>
 Sent ${tx.amount} SDT
 </div>
-<div style="margin-top:5px;">
+<div style="margin-top:6px;">
 To: ${shorten(tx.to)}
 </div>
-<div class="txhash">
+<div style="margin-top:6px;font-size:11px;color:#94a3b8;word-break:break-all;">
 ${tx.hash}
 </div>
 </div>
 `;
 });
-}
-async function addToken(){
-try{
-await ethereum.request({
-method:'wallet_watchAsset',
-params:{
-type:'ERC20',
-options:{
-address:
-SDT_TOKEN_ADDRESS,
-symbol:'SDT',
-decimals:8,
-image:''
-}
-}
-});
-toast(
-'success',
-'SDT Added'
-);
-}catch(err){
-console.log(err);
-}
 }
 if(window.ethereum){
 ethereum.on(
@@ -634,15 +459,6 @@ ethereum.on(
 ethereum.on(
 'chainChanged',
 ()=>location.reload()
-);
-ethereum.on(
-'disconnect',
-()=>{
-localStorage.removeItem(
-"sdt_connected"
-);
-location.reload();
-}
 );
 }
 window.addEventListener(
@@ -663,5 +479,4 @@ if(userAddress){
 loadBalance();
 }
 },15000);
-</script>
-</
+</scr
