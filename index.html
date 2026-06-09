@@ -82,16 +82,14 @@ linear-gradient(
 -webkit-text-fill-color:transparent;
 }
 .usd-value{
-font-size:20px;
-margin-top:10px;
+font-size:22px;
+margin-top:12px;
 color:#22c55e;
-font-weight:600;
+font-weight:700;
 -webkit-text-fill-color:#22c55e;
 }
 .price{
-margin-top:10px;
-font-size:18px;
-color:#10b981;
+display:none;
 }
 .address{
 margin-top:18px;
@@ -100,6 +98,7 @@ border-radius:18px;
 background:
 rgba(255,255,255,0.05);
 word-break:break-all;
+font-size:18px;
 }
 .row{
 display:flex;
@@ -109,11 +108,12 @@ margin-top:20px;
 }
 button{
 border:none;
-padding:14px 20px;
-border-radius:16px;
+padding:16px 22px;
+border-radius:18px;
 cursor:pointer;
-font-size:15px;
+font-size:18px;
 transition:0.25s;
+font-weight:600;
 }
 button:hover{
 transform:translateY(-2px);
@@ -123,7 +123,7 @@ background:
 linear-gradient(
 135deg,
 #2563eb,
-#3b82f6
+#38bdf8
 );
 color:white;
 }
@@ -142,14 +142,10 @@ linear-gradient(
 color:white;
 }
 nav{
-display:flex;
-gap:10px;
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:12px;
 margin-top:25px;
-flex-wrap:wrap;
-}
-nav button{
-flex:1;
-min-width:120px;
 }
 nav button.active{
 background:
@@ -187,13 +183,13 @@ border-radius:16px;
 background:
 rgba(255,255,255,0.06);
 color:white;
-font-size:15px;
+font-size:16px;
 }
 input::placeholder{
 color:#94a3b8;
 }
 .section-title{
-font-size:24px;
+font-size:30px;
 margin-bottom:18px;
 }
 .tx-card{
@@ -206,13 +202,6 @@ margin-bottom:14px;
 .tx-card a{
 color:#60a5fa;
 text-decoration:none;
-}
-iframe{
-width:100%;
-height:450px;
-border:none;
-border-radius:24px;
-overflow:hidden;
 }
 .modal{
 display:none;
@@ -313,11 +302,6 @@ onclick="showSection('history')"
 id="tab-history">
 🧾 History
 </button>
-<button
-onclick="showSection('chart')"
-id="tab-chart">
-📈 Chart
-</button>
 </nav>
 <div
 id="section-send"
@@ -381,16 +365,6 @@ class="section">
 🧾 Transaction History
 </div>
 <div id="history"></div>
-</div>
-<div
-id="section-chart"
-class="section">
-<div class="section-title">
-📈 Token Price Chart
-</div>
-<iframe
-src="https://www.geckoterminal.com/bitkub_chain/pools/0xf42d65b190bb78fb8ead8a92110b653722f96048?embed=1">
-</iframe>
 </div>
 </div>
 </div>
@@ -714,7 +688,7 @@ document.getElementById(
 `
 ${balance.toFixed(8)} 1₿
 <div class="usd-value">
-≈ $${usdValue.toFixed(2)} USD
+$${usdValue.toFixed(2)} USD
 </div>
 `;
 }
@@ -731,18 +705,9 @@ parseFloat(
 data.data.attributes
 .base_token_price_usd || 0
 );
-document.getElementById(
-"price"
-).innerText =
-"≈ $" +
-currentPriceUSD.toFixed(8) +
-" USD / 1₿";
 getBalance();
 }catch(e){
-document.getElementById(
-"price"
-).innerText =
-"Unavailable";
+console.log(e);
 }
 }
 function copyAddress(){
