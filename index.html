@@ -3,159 +3,200 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>1₿illion Wallet</title>
+<title>SDT Wallet</title>
+
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 <script src="https://unpkg.com/web3modal"></script>
 <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
 <script src="https://unpkg.com/html5-qrcode"></script>
+
 <style>
+
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
 }
+
 body{
 font-family:Arial,sans-serif;
 background:
-linear-gradient(
-135deg,
-#020617,
-#0f172a,
-#111827
-);
+radial-gradient(circle at top,#0f172a,#020617 60%);
 min-height:100vh;
 padding:20px;
 color:white;
 overflow-x:hidden;
 }
+
 .container{
 max-width:950px;
 margin:auto;
 }
+
 .wallet-card{
 background:
-rgba(255,255,255,0.06);
-backdrop-filter:blur(18px);
+rgba(255,255,255,0.05);
+
+backdrop-filter:blur(22px);
+
 border:
 1px solid rgba(255,255,255,0.08);
-border-radius:30px;
+
+border-radius:32px;
+
 padding:30px;
+
 box-shadow:
-0 20px 60px rgba(0,0,0,0.45);
+0 20px 70px rgba(0,0,0,0.55);
+
 margin-bottom:25px;
+
 position:relative;
 overflow:hidden;
-animation:floatCard 5s ease-in-out infinite;
 }
-@keyframes floatCard{
-0%{
-transform:translateY(0px);
-}
-50%{
-transform:translateY(-6px);
-}
-100%{
-transform:translateY(0px);
-}
-}
+
 .wallet-card::before{
 content:"";
 position:absolute;
-top:-100px;
-right:-100px;
-width:220px;
-height:220px;
+top:-140px;
+right:-140px;
+width:320px;
+height:320px;
+
 background:
 radial-gradient(
 circle,
-rgba(59,130,246,0.35),
+rgba(56,189,248,0.35),
 transparent
 );
 }
-.logo{
-font-size:36px;
-font-weight:bold;
-margin-bottom:8px;
+
+.wallet-card::after{
+content:"";
+position:absolute;
+bottom:-120px;
+left:-120px;
+width:260px;
+height:260px;
+
+background:
+radial-gradient(
+circle,
+rgba(37,99,235,0.28),
+transparent
+);
 }
+
+.logo{
+font-size:38px;
+font-weight:800;
+margin-bottom:8px;
+position:relative;
+z-index:2;
+}
+
 .subtitle{
 color:#94a3b8;
+font-size:16px;
+position:relative;
+z-index:2;
 }
-.balance-wrap{
-margin-top:25px;
+
+.balance-box{
+margin-top:28px;
+position:relative;
+z-index:2;
 }
+
 .balance{
-display:flex;
-align-items:flex-end;
-gap:10px;
-flex-wrap:wrap;
-font-size:52px;
-font-weight:bold;
+font-size:58px;
+font-weight:900;
+line-height:1;
+
 background:
 linear-gradient(
 90deg,
+#38bdf8,
 #60a5fa,
 #22d3ee
 );
+
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
-text-shadow:
-0 0 18px rgba(96,165,250,0.45);
 }
+
 .token-symbol{
-font-size:42px;
-font-weight:700;
+font-size:44px;
+margin-left:8px;
 }
+
 .usd-value{
-font-size:22px;
-margin-top:10px;
-color:#22c55e;
+margin-top:14px;
+font-size:24px;
 font-weight:700;
+color:#22c55e;
 }
-.price{
-display:none;
-}
+
 .address{
-margin-top:18px;
-padding:15px;
-border-radius:18px;
+margin-top:22px;
+padding:18px;
+border-radius:22px;
+
 background:
 rgba(255,255,255,0.05);
+
 word-break:break-all;
 font-size:16px;
+
+border:
+1px solid rgba(255,255,255,0.06);
+
+position:relative;
+z-index:2;
 }
+
 .row{
 display:flex;
 gap:12px;
 flex-wrap:wrap;
-margin-top:20px;
+margin-top:22px;
+position:relative;
+z-index:2;
 }
+
 button{
 border:none;
-padding:14px 20px;
-border-radius:16px;
+padding:15px 22px;
+border-radius:18px;
 cursor:pointer;
-font-size:15px;
+font-size:16px;
 transition:0.25s;
-font-weight:600;
-letter-spacing:0.3px;
+font-weight:700;
 }
+
 button:hover{
-transform:translateY(-2px);
+transform:translateY(-3px);
 }
+
 .primary{
 background:
 linear-gradient(
 135deg,
 #2563eb,
-#3b82f6
+#38bdf8
 );
 color:white;
+
+box-shadow:
+0 10px 30px rgba(37,99,235,0.35);
 }
+
 .secondary{
 background:
 rgba(255,255,255,0.08);
 color:white;
 }
+
 .danger{
 background:
 linear-gradient(
@@ -165,16 +206,16 @@ linear-gradient(
 );
 color:white;
 }
+
 nav{
-display:flex;
-gap:10px;
-margin-top:25px;
-flex-wrap:wrap;
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:12px;
+margin-top:28px;
+position:relative;
+z-index:2;
 }
-nav button{
-flex:1;
-min-width:120px;
-}
+
 nav button.active{
 background:
 linear-gradient(
@@ -184,14 +225,19 @@ linear-gradient(
 );
 color:white;
 }
+
 .section{
 display:none;
-margin-top:25px;
+margin-top:28px;
 animation:fade 0.3s ease;
+position:relative;
+z-index:2;
 }
+
 .section.active{
 display:block;
 }
+
 @keyframes fade{
 from{
 opacity:0;
@@ -202,64 +248,92 @@ opacity:1;
 transform:translateY(0);
 }
 }
+
 input{
 width:100%;
-padding:16px;
-margin-top:12px;
+padding:17px;
+margin-top:14px;
 border:none;
-border-radius:16px;
+border-radius:18px;
+
 background:
 rgba(255,255,255,0.06);
+
 color:white;
-font-size:15px;
-backdrop-filter:blur(12px);
+font-size:16px;
+
 border:
 1px solid rgba(255,255,255,0.05);
 }
+
 input::placeholder{
 color:#94a3b8;
 }
+
 .section-title{
-font-size:24px;
-margin-bottom:18px;
+font-size:28px;
+margin-bottom:20px;
+font-weight:800;
 }
+
 .tx-card{
-padding:16px;
-border-radius:18px;
+padding:18px;
+border-radius:22px;
+
 background:
 rgba(255,255,255,0.05);
-margin-bottom:14px;
+
+margin-bottom:16px;
+
+border:
+1px solid rgba(255,255,255,0.05);
+
 transition:0.25s;
 }
+
 .tx-card:hover{
-transform:translateY(-4px);
+transform:translateY(-3px);
+
 background:
-rgba(255,255,255,0.08);
+rgba(255,255,255,0.07);
 }
+
 .tx-card a{
-color:#60a5fa;
+color:#38bdf8;
 text-decoration:none;
 }
+
 .modal{
 display:none;
 position:fixed;
 inset:0;
+
 background:
-rgba(0,0,0,0.75);
+rgba(0,0,0,0.8);
+
 z-index:9999;
+
 justify-content:center;
 align-items:center;
 }
+
 .modal-content{
-background:
-#0f172a;
-padding:25px;
-border-radius:25px;
+background:#0f172a;
+
+padding:28px;
+
+border-radius:28px;
+
 width:90%;
-max-width:420px;
+max-width:430px;
+
 position:relative;
 text-align:center;
+
+border:
+1px solid rgba(255,255,255,0.06);
 }
+
 .modal-close{
 position:absolute;
 top:14px;
@@ -267,337 +341,403 @@ right:18px;
 cursor:pointer;
 font-size:24px;
 }
+
 .toast{
 position:fixed;
 bottom:20px;
 right:20px;
+
 background:#111827;
-padding:14px 20px;
-border-radius:14px;
+
+padding:15px 22px;
+
+border-radius:16px;
+
 display:none;
+
 z-index:999999;
+
+border:
+1px solid rgba(255,255,255,0.08);
 }
+
 pre{
 white-space:pre-wrap;
-margin-top:15px;
+margin-top:16px;
 color:#93c5fd;
 }
+
 .loading{
 opacity:0.6;
 pointer-events:none;
 }
+
 ::-webkit-scrollbar{
 width:8px;
 }
-::-webkit-scrollbar-track{
-background:#0f172a;
-}
+
 ::-webkit-scrollbar-thumb{
 background:#334155;
 border-radius:20px;
 }
-::-webkit-scrollbar-thumb:hover{
-background:#475569;
-}
+
 </style>
 </head>
+
 <body>
+
 <div class="container">
+
 <div class="wallet-card">
+
 <div class="logo">
-💎 1₿illion Wallet
+💎 SDT Wallet
 </div>
+
 <div class="subtitle">
 Bitkub Chain Wallet
 </div>
-<div class="balance-wrap">
-<div class="balance" id="balance">
+
+<div class="balance-box">
+
+<div
+class="balance"
+id="balance">
 0.00000000
-<span class="token-symbol">1₿</span>
+<span class="token-symbol">SDT</span>
 </div>
-<div class="usd-value" id="usd-value">
+
+<div
+class="usd-value"
+id="usd-value">
 $0.00 USD
 </div>
+
 </div>
-<div class="price" id="price">
-Loading price...
-</div>
-<div class="address" id="wallet-info">
+
+<div
+class="address"
+id="wallet-info">
 Not connected
 </div>
+
 <div class="row">
+
 <button
 class="primary"
-onclick="connectWallet()"
->
+onclick="connectWallet()">
 🔗 Connect Wallet
 </button>
+
 <button
 class="secondary"
-onclick="copyAddress()"
->
+onclick="copyAddress()">
 📋 Copy
 </button>
+
 <button
 class="danger"
-onclick="logout()"
->
+onclick="logout()">
 🚪 Logout
 </button>
+
 </div>
+
 <nav>
+
 <button
 onclick="showSection('send')"
 id="tab-send"
-class="active"
->
+class="active">
 📤 Send
 </button>
+
 <button
 onclick="showSection('receive')"
-id="tab-receive"
->
+id="tab-receive">
 📥 Receive
 </button>
+
 <button
 onclick="showSection('history')"
-id="tab-history"
->
+id="tab-history">
 🧾 History
 </button>
-<button
-onclick="showSection('chart')"
-id="tab-chart"
->
-📈 Chart
-</button>
+
 </nav>
+
 <div
 id="section-send"
-class="section active"
->
+class="section active">
+
 <div class="section-title">
 📤 Send Token
 </div>
+
 <input
 type="text"
 id="to"
 placeholder="Recipient address"
 />
+
 <input
 type="number"
 id="amount"
 placeholder="Amount"
 />
+
 <div class="row">
+
 <button
 class="primary"
 id="sendBtn"
-onclick="sendToken()"
->
-Send Token
+onclick="sendToken()">
+Send SDT
 </button>
+
 <button
 class="secondary"
-onclick="openScanner()"
->
+onclick="openScanner()">
 📷 QR Scan
 </button>
+
 </div>
+
 <pre id="receipt"></pre>
+
 </div>
+
 <div
 id="section-receive"
-class="section"
->
+class="section">
+
 <div class="section-title">
-📥 Receive Token
+📥 Receive SDT
 </div>
+
 <div
 class="address"
-id="my-address"
->
+id="my-address">
 Your address: -
 </div>
+
 <div class="row">
+
 <button
 class="primary"
-onclick="openQRModal()"
->
+onclick="openQRModal()">
 📲 Show QR
 </button>
+
 <button
 class="secondary"
-onclick="openRequestQR()"
->
+onclick="openRequestQR()">
 💸 Request QR
 </button>
+
 </div>
+
 </div>
+
 <div
 id="section-history"
-class="section"
->
+class="section">
+
 <div class="section-title">
 🧾 Transaction History
 </div>
+
 <div id="history"></div>
+
 </div>
-<div
-id="section-chart"
-class="section"
->
-<div class="section-title">
-📈 Token Price Chart
-</div>
-<iframe
-src="https://www.geckoterminal.com/bitkub_chain/pools/0xf42d65b190bb78fb8ead8a92110b653722f96048?embed=1">
-</iframe>
+
 </div>
 </div>
-</div>
+
 <div
 id="qrModal"
-class="modal"
->
+class="modal">
+
 <div class="modal-content">
+
 <div
 class="modal-close"
-onclick="closeQRModal()"
->
+onclick="closeQRModal()">
 ✖
 </div>
+
 <h2>
 Receive Address
 </h2>
+
 <div
 id="qr-modal-content"
-style="margin-top:20px;"
->
+style="margin-top:20px;">
+</div>
+
 </div>
 </div>
-</div>
+
 <div
 id="scannerModal"
-class="modal"
->
+class="modal">
+
 <div class="modal-content">
+
 <div
 class="modal-close"
-onclick="closeScanner()"
->
+onclick="closeScanner()">
 ✖
 </div>
+
 <h2>
 Scan QR Code
 </h2>
+
 <div
 id="scanner"
-style="margin-top:20px;"
->
+style="margin-top:20px;">
+</div>
+
 </div>
 </div>
-</div>
+
 <div
 id="requestQRModal"
-class="modal"
->
+class="modal">
+
 <div class="modal-content">
+
 <div
 class="modal-close"
-onclick="closeRequestQR()"
->
+onclick="closeRequestQR()">
 ✖
 </div>
+
 <h2>
 Request Payment
 </h2>
+
 <input
 type="number"
 id="request-amount"
 placeholder="Amount"
 />
+
 <button
 class="primary"
 style="margin-top:15px;"
-onclick="generateRequestQR()"
->
+onclick="generateRequestQR()">
 Generate QR
 </button>
+
 <div
 id="request-qr-content"
-style="margin-top:20px;"
->
+style="margin-top:20px;">
+</div>
+
 </div>
 </div>
-</div>
+
 <div
 class="toast"
-id="toast"
->
+id="toast">
 </div>
+
 <script>
+
 const tokenAddress =
-"0x4dc6f1fa9fd93f28d9b3b37592c572ba18bf6f10";
+"0x046c2b024e3BcAeCC965BB0f80cF8e066352fA01";
+
 const tokenDecimals = 18;
+
+const poolAddress =
+"0x297d8d77a0c0f03e08a840535ea1a99ed1b813d6";
+
 const providerOptions = {};
+
 let web3Modal =
 new window.Web3Modal.default({
 cacheProvider:true,
 providerOptions
 });
+
 let provider;
 let signer;
 let userAddress;
 let scanner;
+
 let currentPriceUSD = 0;
+
 function toast(msg){
+
 const t =
 document.getElementById("toast");
+
 t.innerText = msg;
+
 t.style.display = "block";
+
 setTimeout(()=>{
 t.style.display = "none";
 },3000);
+
 }
+
 function shortAddr(addr){
+
 if(!addr) return "";
+
 return addr.slice(0,6)
 +"..."
 +addr.slice(-4);
+
 }
+
 function showSection(id){
+
 document
 .querySelectorAll(".section")
 .forEach(div=>{
 div.classList.remove("active");
 });
+
 document
 .querySelectorAll("nav button")
 .forEach(btn=>{
 btn.classList.remove("active");
 });
+
 document
 .getElementById(
 "section-"+id
 )
 .classList.add("active");
+
 document
 .getElementById(
 "tab-"+id
 )
 .classList.add("active");
+
 }
+
 async function connectWallet(){
+
 try{
+
 const instance =
 await web3Modal.connect();
+
 provider =
 new ethers.providers.Web3Provider(instance);
+
 signer =
 provider.getSigner();
+
 userAddress =
 await signer.getAddress();
+
 document.getElementById(
 "wallet-info"
 ).innerHTML =
@@ -605,52 +745,63 @@ document.getElementById(
 Connected:<br>
 ${shortAddr(userAddress)}
 `;
+
 document.getElementById(
 "my-address"
 ).innerText =
 userAddress;
-getBalance();
+
+await getBalance();
+
 toast("Wallet Connected");
+
 }catch(err){
-toast(
-"Connection failed"
-);
+
+toast("Connection failed");
+
 }
+
 }
+
 function logout(){
+
 web3Modal.clearCachedProvider();
+
 location.reload();
+
 }
+
 async function sendToken(){
-const btn =
-document.getElementById(
-"sendBtn"
-);
+
 try{
+
+const btn =
+document.getElementById("sendBtn");
+
 btn.classList.add("loading");
+
 const to =
-document.getElementById("to")
-.value;
+document.getElementById("to").value;
+
 const amount =
-document.getElementById(
-"amount"
-).value;
+document.getElementById("amount").value;
+
 if(
 !ethers.utils.isAddress(to)
 ){
 toast("Invalid address");
-btn.classList.remove("loading");
 return;
 }
+
 if(
 !amount ||
 isNaN(amount) ||
 amount <= 0
 ){
 toast("Invalid amount");
-btn.classList.remove("loading");
 return;
 }
+
 const contract =
 new ethers.Contract(
 tokenAddress,
@@ -659,51 +810,66 @@ tokenAddress,
 ],
 signer
 );
+
 const amt =
 ethers.utils.parseUnits(
 amount,
 tokenDecimals
 );
+
 const tx =
 await contract.transfer(
 to,
 amt
 );
+
 toast("Transaction Sent");
+
 const receipt =
 await tx.wait();
+
 document.getElementById(
 "receipt"
 ).innerText =
 receipt.transactionHash;
+
 saveHistory(
 to,
 amount,
 receipt.transactionHash
 );
-getBalance();
+
+await getBalance();
+
 toast("Transfer Complete");
+
 }catch(err){
-toast(
-"Transaction Failed"
-);
+
+toast("Transaction Failed");
+
 }finally{
+
 document
 .getElementById("sendBtn")
 .classList.remove("loading");
+
 }
+
 }
+
 function saveHistory(
 to,
 amount,
 tx
 ){
+
 const data =
 JSON.parse(
 localStorage.getItem(
-"txhistory"
+"sdt_txhistory"
 ) || "[]"
 );
+
 data.unshift({
 time:new Date()
 .toLocaleString(),
@@ -711,58 +877,75 @@ to,
 amount,
 tx
 });
+
 localStorage.setItem(
-"txhistory",
+"sdt_txhistory",
 JSON.stringify(data)
 );
+
 loadHistory();
+
 }
+
 function loadHistory(){
+
 const history =
-document.getElementById(
-"history"
-);
+document.getElementById("history");
+
 history.innerHTML = "";
+
 const data =
 JSON.parse(
 localStorage.getItem(
-"txhistory"
+"sdt_txhistory"
 ) || "[]"
 );
+
 data.forEach(item=>{
+
 const div =
 document.createElement("div");
+
 div.className =
 "tx-card";
+
 div.innerHTML =
 `
 <div>
 <b>To:</b>
 ${shortAddr(item.to)}
 </div>
-<div>
+
+<div style="margin-top:8px;">
 <b>Amount:</b>
-${item.amount} 1₿
+${item.amount} SDT
 </div>
-<div>
+
+<div style="margin-top:8px;">
 <b>Time:</b>
 ${item.time}
 </div>
-<div style="margin-top:8px;">
+
+<div style="margin-top:12px;">
 <a
 href="https://www.kubscan.com/tx/${item.tx}"
-target="_blank"
->
+target="_blank">
 View Transaction
 </a>
 </div>
 `;
+
 history.appendChild(div);
+
 });
+
 }
+
 async function getBalance(){
+
 if(!userAddress)
 return;
+
 const contract =
 new ethers.Contract(
 tokenAddress,
@@ -771,179 +954,264 @@ tokenAddress,
 ],
 provider
 );
+
 const raw =
 await contract.balanceOf(
 userAddress
 );
+
 const formatted =
 ethers.utils.formatUnits(
 raw,
 tokenDecimals
 );
+
 const balance =
 parseFloat(formatted);
+
 const usdValue =
 balance * currentPriceUSD;
+
 document.getElementById(
 "balance"
 ).innerHTML =
 `
-${balance.toFixed(8)}
-<span class="token-symbol">1₿</span>
+${balance.toLocaleString(undefined,{
+minimumFractionDigits:2,
+maximumFractionDigits:8
+})}
+<span class="token-symbol">SDT</span>
 `;
+
 document.getElementById(
 "usd-value"
 ).innerText =
-`$${usdValue.toFixed(2)} USD`;
+`$${usdValue.toLocaleString(undefined,{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+})} USD`;
+
 }
+
 async function fetchPrice(){
+
 try{
+
 const res =
 await fetch(
-"https://api.geckoterminal.com/api/v2/networks/bitkub_chain/pools/0xf42d65b190bb78fb8ead8a92110b653722f96048"
+`https://api.geckoterminal.com/api/v2/networks/bitkub_chain/pools/${poolAddress}`
 );
+
 const data =
 await res.json();
+
 currentPriceUSD =
 parseFloat(
-data.data.attributes
-.base_token_price_usd || 0
+data.data.attributes.base_token_price_usd || 0
 );
-document.getElementById(
-"price"
-).innerText =
-"$"+currentPriceUSD.toFixed(8)+" USD";
-getBalance();
+
+if(userAddress){
+await getBalance();
+}
+
 }catch(e){
-document.getElementById(
-"price"
-).innerText =
-"Unavailable";
+
+console.log(e);
+
 }
+
 }
+
 function copyAddress(){
+
 if(!userAddress){
+
 toast("Connect Wallet First");
+
 return;
+
 }
+
 navigator.clipboard.writeText(
 userAddress
 );
+
 toast("Address Copied");
+
 }
+
 function openQRModal(){
+
 document.getElementById(
 "qrModal"
 ).style.display = "flex";
+
 if(userAddress){
+
 const qr =
 new QRCodeStyling({
+
 width:220,
 height:220,
+
 data:
-"1BILLION:"+
+"SDT:"+
 userAddress,
+
 dotsOptions:{
 color:"#2563eb",
 type:"rounded"
 },
+
+cornersSquareOptions:{
+type:"extra-rounded",
+color:"#38bdf8"
+},
+
 backgroundOptions:{
 color:"#ffffff"
 }
+
 });
+
 document.getElementById(
 "qr-modal-content"
 ).innerHTML = "";
+
 qr.append(
 document.getElementById(
 "qr-modal-content"
 )
 );
+
 }
+
 }
+
 function closeQRModal(){
+
 document.getElementById(
 "qrModal"
 ).style.display = "none";
+
 }
+
 function openScanner(){
+
 document.getElementById(
 "scannerModal"
 ).style.display = "flex";
+
 scanner =
 new Html5Qrcode("scanner");
+
 scanner.start(
 {facingMode:"environment"},
 {
 fps:10,
 qrbox:250
 },
+
 qrCodeMessage=>{
+
 const [
 addrPart,
 query
 ] =
 qrCodeMessage
 .replace(
-"1BILLION:",
+"SDT:",
 ""
 )
 .split("?");
+
 document.getElementById(
 "to"
 ).value = addrPart;
+
 if(query){
+
 const params =
-new URLSearchParams(
-query
-);
+new URLSearchParams(query);
+
 const amount =
 params.get("amount");
+
 if(amount){
+
 document.getElementById(
 "amount"
 ).value = amount;
+
 }
+
 }
+
 closeScanner();
+
 toast("QR Scanned");
+
 }
+
 ).catch(err=>{
+
 toast("Camera Error");
+
 closeScanner();
+
 });
+
 }
+
 async function closeScanner(){
+
 if(scanner){
+
 await scanner.stop();
+
 await scanner.clear();
+
 scanner = null;
+
 }
+
 document.getElementById(
 "scannerModal"
 ).style.display = "none";
+
 }
+
 function openRequestQR(){
+
 document.getElementById(
 "requestQRModal"
 ).style.display = "flex";
+
 document.getElementById(
 "request-qr-content"
 ).innerHTML = "";
+
 document.getElementById(
 "request-amount"
 ).value = "";
+
 }
+
 function closeRequestQR(){
+
 document.getElementById(
 "requestQRModal"
 ).style.display = "none";
+
 }
+
 function generateRequestQR(){
+
 const amount =
 document.getElementById(
 "request-amount"
 ).value;
+
 if(
 !amount ||
 isNaN(amount) ||
@@ -952,43 +1220,70 @@ amount <= 0
 toast("Invalid Amount");
 return;
 }
+
 const data =
-`1BILLION:${userAddress}?amount=${amount}`;
+`SDT:${userAddress}?amount=${amount}`;
+
 const qr =
 new QRCodeStyling({
+
 width:220,
 height:220,
+
 data:data,
+
 dotsOptions:{
 color:"#2563eb",
 type:"rounded"
 },
+
+cornersSquareOptions:{
+type:"extra-rounded",
+color:"#38bdf8"
+},
+
 backgroundOptions:{
 color:"#ffffff"
 }
+
 });
+
 document.getElementById(
 "request-qr-content"
 ).innerHTML = "";
+
 qr.append(
 document.getElementById(
 "request-qr-content"
 )
 );
+
 }
+
 window.addEventListener(
 "load",
 ()=>{
+
 fetchPrice();
+
 loadHistory();
+
 showSection("send");
+
 if(
 web3Modal.cachedProvider
 ){
 connectWallet();
 }
+
+setInterval(()=>{
+fetchPrice();
+},30000);
+
 }
 );
+
 </script>
+
 </body>
 </html>
