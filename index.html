@@ -3,21 +3,17 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SDT Wallet</title>
-
+<title>1₿illion Wallet</title>
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 <script src="https://unpkg.com/web3modal"></script>
 <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
 <script src="https://unpkg.com/html5-qrcode"></script>
-
 <style>
-
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
 }
-
 body{
 font-family:Arial,sans-serif;
 background:
@@ -31,34 +27,24 @@ min-height:100vh;
 padding:20px;
 color:white;
 }
-
 .container{
 max-width:950px;
 margin:auto;
 }
-
 .wallet-card{
 background:
 rgba(255,255,255,0.06);
-
 backdrop-filter:blur(18px);
-
 border:
 1px solid rgba(255,255,255,0.08);
-
 border-radius:30px;
-
 padding:30px;
-
 box-shadow:
 0 20px 60px rgba(0,0,0,0.45);
-
 margin-bottom:25px;
-
 position:relative;
 overflow:hidden;
 }
-
 .wallet-card::before{
 content:"";
 position:absolute;
@@ -66,7 +52,6 @@ top:-100px;
 right:-100px;
 width:220px;
 height:220px;
-
 background:
 radial-gradient(
 circle,
@@ -74,101 +59,71 @@ rgba(59,130,246,0.35),
 transparent
 );
 }
-
 .logo{
 font-size:36px;
 font-weight:bold;
 margin-bottom:8px;
 }
-
 .subtitle{
 color:#94a3b8;
 }
-
 .balance{
 font-size:52px;
 font-weight:bold;
 margin-top:25px;
-line-height:1.2;
-
 background:
 linear-gradient(
 90deg,
 #60a5fa,
 #22d3ee
 );
-
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 }
-
-.token-symbol{
-font-size:42px;
-font-weight:700;
-margin-left:10px;
-}
-
-.usd-value{
-font-size:22px;
-margin-top:12px;
-color:#22c55e;
-font-weight:700;
--webkit-text-fill-color:#22c55e;
-}
-
 .price{
-display:none;
+margin-top:10px;
+font-size:18px;
+color:#10b981;
 }
-
 .address{
 margin-top:18px;
 padding:15px;
 border-radius:18px;
-
 background:
 rgba(255,255,255,0.05);
-
 word-break:break-all;
-font-size:18px;
 }
-
 .row{
 display:flex;
 gap:12px;
 flex-wrap:wrap;
 margin-top:20px;
 }
-
 button{
 border:none;
-padding:16px 22px;
-border-radius:18px;
+padding:14px 20px;
+border-radius:16px;
 cursor:pointer;
-font-size:18px;
+font-size:15px;
 transition:0.25s;
-font-weight:600;
 }
-
 button:hover{
 transform:translateY(-2px);
 }
-
 .primary{
 background:
 linear-gradient(
 135deg,
 #2563eb,
-#38bdf8
+#3b82f6
 );
 color:white;
 }
-
 .secondary{
 background:
 rgba(255,255,255,0.08);
 color:white;
 }
-
 .danger{
 background:
 linear-gradient(
@@ -178,14 +133,16 @@ linear-gradient(
 );
 color:white;
 }
-
 nav{
-display:grid;
-grid-template-columns:1fr 1fr 1fr;
-gap:12px;
+display:flex;
+gap:10px;
 margin-top:25px;
+flex-wrap:wrap;
 }
-
+nav button{
+flex:1;
+min-width:120px;
+}
 nav button.active{
 background:
 linear-gradient(
@@ -195,17 +152,14 @@ linear-gradient(
 );
 color:white;
 }
-
 .section{
 display:none;
 margin-top:25px;
 animation:fade 0.3s ease;
 }
-
 .section.active{
 display:block;
 }
-
 @keyframes fade{
 from{
 opacity:0;
@@ -216,73 +170,62 @@ opacity:1;
 transform:translateY(0);
 }
 }
-
 input{
 width:100%;
 padding:16px;
 margin-top:12px;
 border:none;
 border-radius:16px;
-
 background:
 rgba(255,255,255,0.06);
-
 color:white;
-font-size:16px;
+font-size:15px;
 }
-
 input::placeholder{
 color:#94a3b8;
 }
-
 .section-title{
-font-size:30px;
+font-size:24px;
 margin-bottom:18px;
 }
-
 .tx-card{
 padding:16px;
 border-radius:18px;
-
 background:
 rgba(255,255,255,0.05);
-
 margin-bottom:14px;
 }
-
 .tx-card a{
 color:#60a5fa;
 text-decoration:none;
 }
-
+iframe{
+width:100%;
+height:450px;
+border:none;
+border-radius:24px;
+overflow:hidden;
+}
 .modal{
 display:none;
 position:fixed;
 inset:0;
-
 background:
 rgba(0,0,0,0.75);
-
 z-index:9999;
-
 justify-content:center;
 align-items:center;
 }
-
 .modal-content{
-background:#0f172a;
-
+background:
+#0f172a;
 padding:25px;
-
 border-radius:25px;
-
 width:90%;
 max-width:420px;
-
 position:relative;
 text-align:center;
 }
-
 .modal-close{
 position:absolute;
 top:14px;
@@ -290,377 +233,317 @@ right:18px;
 cursor:pointer;
 font-size:24px;
 }
-
 .toast{
 position:fixed;
 bottom:20px;
 right:20px;
-
 background:#111827;
-
 padding:14px 20px;
-
 border-radius:14px;
-
 display:none;
-
 z-index:999999;
 }
-
 pre{
 white-space:pre-wrap;
 margin-top:15px;
 color:#93c5fd;
 }
-
 .loading{
 opacity:0.6;
 pointer-events:none;
 }
-
 </style>
 </head>
-
 <body>
-
 <div class="container">
-
 <div class="wallet-card">
-
 <div class="logo">
-💎 SDT Wallet
+💎 1₿illion Wallet
 </div>
-
 <div class="subtitle">
 Bitkub Chain Wallet
 </div>
-
 <div class="balance" id="balance">
-0.00000000 <span class="token-symbol">SDT</span>
+0.00000000
 </div>
-
 <div class="price" id="price">
 Loading price...
 </div>
-
 <div class="address" id="wallet-info">
 Not connected
 </div>
-
 <div class="row">
-
 <button
 class="primary"
-onclick="connectWallet()">
+onclick="connectWallet()"
+>
 🔗 Connect Wallet
 </button>
-
 <button
 class="secondary"
-onclick="copyAddress()">
+onclick="copyAddress()"
+>
 📋 Copy
 </button>
-
 <button
 class="danger"
-onclick="logout()">
+onclick="logout()"
+>
 🚪 Logout
 </button>
-
 </div>
-
 <nav>
-
 <button
 onclick="showSection('send')"
 id="tab-send"
-class="active">
+class="active"
+>
 📤 Send
 </button>
-
 <button
 onclick="showSection('receive')"
-id="tab-receive">
+id="tab-receive"
+>
 📥 Receive
 </button>
-
 <button
 onclick="showSection('history')"
-id="tab-history">
+id="tab-history"
+>
 🧾 History
 </button>
-
+<button
+onclick="showSection('chart')"
+id="tab-chart"
+>
+📈 Chart
+</button>
 </nav>
-
 <div
 id="section-send"
-class="section active">
-
+class="section active"
+>
 <div class="section-title">
 📤 Send Token
 </div>
-
 <input
 type="text"
 id="to"
 placeholder="Recipient address"
 />
-
 <input
 type="number"
 id="amount"
 placeholder="Amount"
 />
-
 <div class="row">
-
 <button
 class="primary"
 id="sendBtn"
-onclick="sendToken()">
+onclick="sendToken()"
+>
 Send Token
 </button>
-
 <button
 class="secondary"
-onclick="openScanner()">
+onclick="openScanner()"
+>
 📷 QR Scan
 </button>
-
 </div>
-
 <pre id="receipt"></pre>
-
 </div>
-
 <div
 id="section-receive"
-class="section">
-
+class="section"
+>
 <div class="section-title">
 📥 Receive Token
 </div>
-
 <div
 class="address"
-id="my-address">
+id="my-address"
+>
 Your address: -
 </div>
-
 <div class="row">
-
 <button
 class="primary"
-onclick="openQRModal()">
+onclick="openQRModal()"
+>
 📲 Show QR
 </button>
-
 <button
 class="secondary"
-onclick="openRequestQR()">
+onclick="openRequestQR()"
+>
 💸 Request QR
 </button>
-
 </div>
-
 </div>
-
 <div
 id="section-history"
-class="section">
-
+class="section"
+>
 <div class="section-title">
 🧾 Transaction History
 </div>
-
 <div id="history"></div>
-
 </div>
-
+<div
+id="section-chart"
+class="section"
+>
+<div class="section-title">
+📈 Token Price Chart
+</div>
+<iframe
+src="https://www.geckoterminal.com/bitkub_chain/pools/0xf42d65b190bb78fb8ead8a92110b653722f96048?embed=1">
+</iframe>
 </div>
 </div>
-
+</div>
 <div
 id="qrModal"
-class="modal">
-
+class="modal"
+>
 <div class="modal-content">
-
 <div
 class="modal-close"
-onclick="closeQRModal()">
+onclick="closeQRModal()"
+>
 ✖
 </div>
-
 <h2>
 Receive Address
 </h2>
-
 <div
 id="qr-modal-content"
-style="margin-top:20px;">
+style="margin-top:20px;"
+>
 </div>
-
 </div>
 </div>
-
 <div
 id="scannerModal"
-class="modal">
-
+class="modal"
+>
 <div class="modal-content">
-
 <div
 class="modal-close"
-onclick="closeScanner()">
+onclick="closeScanner()"
+>
 ✖
 </div>
-
 <h2>
 Scan QR Code
 </h2>
-
 <div
 id="scanner"
-style="margin-top:20px;">
+style="margin-top:20px;"
+>
 </div>
-
 </div>
 </div>
-
 <div
 id="requestQRModal"
-class="modal">
-
+class="modal"
+>
 <div class="modal-content">
-
 <div
 class="modal-close"
-onclick="closeRequestQR()">
+onclick="closeRequestQR()"
+>
 ✖
 </div>
-
 <h2>
 Request Payment
 </h2>
-
 <input
 type="number"
 id="request-amount"
 placeholder="Amount"
 />
-
 <button
 class="primary"
 style="margin-top:15px;"
-onclick="generateRequestQR()">
+onclick="generateRequestQR()"
+>
 Generate QR
 </button>
-
 <div
 id="request-qr-content"
-style="margin-top:20px;">
+style="margin-top:20px;"
+>
 </div>
-
 </div>
 </div>
-
 <div
 class="toast"
-id="toast">
+id="toast"
+>
 </div>
-
 <script>
-
 const tokenAddress =
-"0x4DC6F1Fa9fd93f28d9b3b37592C572BA18BF6f10";
-
+"0x4dc6f1fa9fd93f28d9b3b37592c572ba18bf6f10";
 const tokenDecimals = 8;
-
 const providerOptions = {};
-
 let web3Modal =
 new window.Web3Modal.default({
 cacheProvider:true,
 providerOptions
 });
-
 let provider;
 let signer;
 let userAddress;
 let scanner;
-
-let currentPriceUSD = 0;
-
 function toast(msg){
-
 const t =
 document.getElementById("toast");
-
 t.innerText = msg;
-
 t.style.display = "block";
-
 setTimeout(()=>{
 t.style.display = "none";
 },3000);
-
 }
-
 function shortAddr(addr){
-
 if(!addr) return "";
-
 return addr.slice(0,6)
 +"..."
 +addr.slice(-4);
-
 }
-
 function showSection(id){
-
 document
 .querySelectorAll(".section")
 .forEach(div=>{
 div.classList.remove("active");
 });
-
 document
 .querySelectorAll("nav button")
 .forEach(btn=>{
 btn.classList.remove("active");
 });
-
 document
 .getElementById(
 "section-"+id
 )
 .classList.add("active");
-
 document
 .getElementById(
 "tab-"+id
 )
 .classList.add("active");
-
 }
-
 async function connectWallet(){
-
 try{
-
 const instance =
 await web3Modal.connect();
-
 provider =
 new ethers.providers.Web3Provider(instance);
-
 signer =
 provider.getSigner();
-
 userAddress =
 await signer.getAddress();
-
 document.getElementById(
 "wallet-info"
 ).innerHTML =
@@ -668,61 +551,42 @@ document.getElementById(
 Connected:<br>
 ${shortAddr(userAddress)}
 `;
-
 document.getElementById(
 "my-address"
 ).innerText =
 userAddress;
-
 getBalance();
-
 toast("Wallet Connected");
-
 }catch(err){
-
 toast(
 "Connection failed"
 );
-
 }
-
 }
-
 function logout(){
-
 web3Modal.clearCachedProvider();
-
 location.reload();
-
 }
-
 async function sendToken(){
-
 try{
-
 const btn =
 document.getElementById(
 "sendBtn"
 );
-
 btn.classList.add("loading");
-
 const to =
 document.getElementById("to")
 .value;
-
 const amount =
 document.getElementById(
 "amount"
 ).value;
-
 if(
 !ethers.utils.isAddress(to)
 ){
 toast("Invalid address");
 return;
 }
-
 if(
 !amount ||
 isNaN(amount) ||
@@ -731,7 +595,6 @@ amount <= 0
 toast("Invalid amount");
 return;
 }
-
 const contract =
 new ethers.Contract(
 tokenAddress,
@@ -740,68 +603,51 @@ tokenAddress,
 ],
 signer
 );
-
 const amt =
 ethers.utils.parseUnits(
 amount,
 tokenDecimals
 );
-
 const tx =
 await contract.transfer(
 to,
 amt
 );
-
 toast("Transaction Sent");
-
 const receipt =
 await tx.wait();
-
 document.getElementById(
 "receipt"
 ).innerText =
 receipt.transactionHash;
-
 saveHistory(
 to,
 amount,
 receipt.transactionHash
 );
-
 getBalance();
-
 toast("Transfer Complete");
-
 }catch(err){
-
 toast(
 "Transaction Failed"
 );
-
 }finally{
-
 document
 .getElementById("sendBtn")
 .classList.remove("loading");
-
 }
-
 }
-
 function saveHistory(
 to,
 amount,
 tx
 ){
-
 const data =
 JSON.parse(
 localStorage.getItem(
 "txhistory"
 ) || "[]"
 );
-
 data.unshift({
 time:new Date()
 .toLocaleString(),
@@ -809,77 +655,58 @@ to,
 amount,
 tx
 });
-
 localStorage.setItem(
 "txhistory",
 JSON.stringify(data)
 );
-
 loadHistory();
-
 }
-
 function loadHistory(){
-
 const history =
 document.getElementById(
 "history"
 );
-
 history.innerHTML = "";
-
 const data =
 JSON.parse(
 localStorage.getItem(
 "txhistory"
 ) || "[]"
 );
-
 data.forEach(item=>{
-
 const div =
 document.createElement("div");
-
 div.className =
 "tx-card";
-
 div.innerHTML =
 `
 <div>
 <b>To:</b>
 ${shortAddr(item.to)}
 </div>
-
 <div>
 <b>Amount:</b>
-${item.amount} SDT
+${item.amount}
 </div>
-
 <div>
 <b>Time:</b>
 ${item.time}
 </div>
-
 <div style="margin-top:8px;">
 <a
 href="https://www.kubscan.com/tx/${item.tx}"
-target="_blank">
+target="_blank"
+>
 View Transaction
 </a>
 </div>
 `;
-
 history.appendChild(div);
-
 });
-
 }
-
 async function getBalance(){
-
 if(!userAddress)
 return;
-
 const contract =
 new ethers.Contract(
 tokenAddress,
@@ -888,249 +715,169 @@ tokenAddress,
 ],
 provider
 );
-
 const raw =
 await contract.balanceOf(
 userAddress
 );
-
 const formatted =
 ethers.utils.formatUnits(
 raw,
 tokenDecimals
 );
-
-const balance =
-parseFloat(formatted);
-
-const usdValue =
-balance * currentPriceUSD;
-
 document.getElementById(
 "balance"
-).innerHTML =
-`
-${balance.toFixed(8)}
-<span class="token-symbol">SDT</span>
-
-<div class="usd-value">
-$${usdValue.toFixed(2)} USD
-</div>
-`;
-
+).innerText =
+parseFloat(formatted)
+.toFixed(8)
++" 1₿";
 }
-
 async function fetchPrice(){
-
 try{
-
 const res =
 await fetch(
 "https://api.geckoterminal.com/api/v2/networks/bitkub_chain/pools/0xf42d65b190bb78fb8ead8a92110b653722f96048"
 );
-
 const data =
 await res.json();
-
-currentPriceUSD =
+const price =
 parseFloat(
 data.data.attributes
 .base_token_price_usd || 0
-);
-
-getBalance();
-
+).toFixed(8);
+document.getElementById(
+"price"
+).innerText =
+"$"+price+" USD";
 }catch(e){
-
-console.log(e);
-
+document.getElementById(
+"price"
+).innerText =
+"Unavailable";
 }
-
 }
-
 function copyAddress(){
-
 if(!userAddress){
 toast("Connect Wallet First");
 return;
 }
-
 navigator.clipboard.writeText(
 userAddress
 );
-
 toast("Address Copied");
-
 }
-
 function openQRModal(){
-
 document.getElementById(
 "qrModal"
 ).style.display = "flex";
-
 if(userAddress){
-
 const qr =
 new QRCodeStyling({
 width:220,
 height:220,
-
 data:
-"SDT:"+
+"1BILLION:"+
 userAddress,
-
 dotsOptions:{
 color:"#2563eb",
 type:"rounded"
 },
-
 backgroundOptions:{
 color:"#ffffff"
 }
-
 });
-
 document.getElementById(
 "qr-modal-content"
 ).innerHTML = "";
-
 qr.append(
 document.getElementById(
 "qr-modal-content"
 )
 );
-
 }
-
 }
-
 function closeQRModal(){
-
 document.getElementById(
 "qrModal"
 ).style.display = "none";
-
 }
-
 function openScanner(){
-
 document.getElementById(
 "scannerModal"
 ).style.display = "flex";
-
 scanner =
 new Html5Qrcode("scanner");
-
 scanner.start(
 {facingMode:"environment"},
 {
 fps:10,
 qrbox:250
 },
-
 qrCodeMessage=>{
-
 const [
 addrPart,
 query
 ] =
 qrCodeMessage
 .replace(
-"SDT:",
+"1BILLION:",
 ""
 )
 .split("?");
-
 document.getElementById(
 "to"
 ).value = addrPart;
-
 if(query){
-
 const params =
 new URLSearchParams(
 query
 );
-
 const amount =
 params.get("amount");
-
 if(amount){
-
 document.getElementById(
 "amount"
 ).value = amount;
-
 }
-
 }
-
 closeScanner();
-
 toast("QR Scanned");
-
 }
-
 ).catch(err=>{
-
 toast("Camera Error");
-
 closeScanner();
-
 });
-
 }
-
 async function closeScanner(){
-
 if(scanner){
-
 await scanner.stop();
-
 await scanner.clear();
-
 scanner = null;
-
 }
-
 document.getElementById(
 "scannerModal"
 ).style.display = "none";
-
 }
-
 function openRequestQR(){
-
 document.getElementById(
 "requestQRModal"
 ).style.display = "flex";
-
 document.getElementById(
 "request-qr-content"
 ).innerHTML = "";
-
 document.getElementById(
 "request-amount"
 ).value = "";
-
 }
-
 function closeRequestQR(){
-
 document.getElementById(
 "requestQRModal"
 ).style.display = "none";
-
 }
-
 function generateRequestQR(){
-
 const amount =
 document.getElementById(
 "request-amount"
 ).value;
-
 if(
 !amount ||
 isNaN(amount) ||
@@ -1139,61 +886,43 @@ amount <= 0
 toast("Invalid Amount");
 return;
 }
-
 const data =
-`SDT:${userAddress}?amount=${amount}`;
-
+`1BILLION:${userAddress}?amount=${amount}`;
 const qr =
 new QRCodeStyling({
-
 width:220,
 height:220,
-
 data:data,
-
 dotsOptions:{
 color:"#2563eb",
 type:"rounded"
 },
-
 backgroundOptions:{
 color:"#ffffff"
 }
-
 });
-
 document.getElementById(
 "request-qr-content"
 ).innerHTML = "";
-
 qr.append(
 document.getElementById(
 "request-qr-content"
 )
 );
-
 }
-
 window.addEventListener(
 "load",
 ()=>{
-
 fetchPrice();
-
 loadHistory();
-
 showSection("send");
-
 if(
 web3Modal.cachedProvider
 ){
 connectWallet();
 }
-
 }
 );
-
 </script>
-
 </body>
 </html>
